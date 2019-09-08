@@ -6,7 +6,7 @@ public class Student extends User {
 	
 	private String email;
 	private ArrayList<String> phoneNumbers;
-	private String index;
+	private String cardId;
 
 	public Student() {
 		this.phoneNumbers = new ArrayList<String>();
@@ -20,12 +20,12 @@ public class Student extends User {
 		this.email = email;
 	}
 
-	public String getIndex() {
-		return index;
+	public String getCardId() {
+		return cardId;
 	}
 
-	public void setIndex(String index) {
-		this.index = index;
+	public void setCardId(String cardId) {
+		this.cardId = cardId;
 	}
 
 	public void addPhoneNumber(String phoneNumber) {
