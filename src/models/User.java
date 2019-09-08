@@ -9,7 +9,6 @@ public class User {
 	private boolean isDeleted;
 
 	public User() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getFirstName() {
