@@ -7,7 +7,7 @@ public class Student extends User implements IModel<Student> {
 	
 	private String email;
 	private ArrayList<String> phoneNumbers;
-	private String cardId;
+	private int cardId;
 
 	public Student() {
 		this.phoneNumbers = new ArrayList<String>();
@@ -21,11 +21,11 @@ public class Student extends User implements IModel<Student> {
 		this.email = email;
 	}
 
-	public String getCardId() {
+	public int getCardId() {
 		return cardId;
 	}
 
-	public void setCardId(String cardId) {
+	public void setCardId(int cardId) {
 		this.cardId = cardId;
 	}
 
@@ -48,7 +48,7 @@ public class Student extends User implements IModel<Student> {
 			StringExtensions.IsNullOrWhitespace(getUserName()) &&
 			StringExtensions.IsNullOrWhitespace(getPassword()) &&
 			StringExtensions.IsNullOrWhitespace(email) &&
-			StringExtensions.IsNullOrWhitespace(cardId);
+			cardId > 0;
 	}
 	
 	@Override
