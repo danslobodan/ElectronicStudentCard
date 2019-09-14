@@ -124,7 +124,6 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 		System.out.println("Saving changes.");
 		try {
 			mapper.writeValue(file, items);
-			System.out.println("Changes saved successfully.");
 		}
 		catch (Exception ex) {
 			System.out.println("Could not save changes.");
