@@ -11,4 +11,5 @@ public interface IRepository<T> {
 	List<T> getAll();
 	boolean delete(T item);
 	boolean exists(T item);
+	boolean exists(Predicate<T> predicate);
 }
