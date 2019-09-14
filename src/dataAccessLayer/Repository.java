@@ -10,14 +10,13 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public abstract class Repository<T> implements IRepository<T> {
+import models.IModel;
+
+public class Repository<T extends IModel<T>> implements IRepository<T> {
 	
 	private File file;
 	private List<T> items;
 	private ObjectMapper mapper;
-	
-	protected abstract boolean idenityComparer(T item1, T item2);
-	protected abstract boolean isValid(T item);
 	
 	public Repository(Class<T> cls) {
 		
@@ -25,64 +24,32 @@ public abstract class Repository<T> implements IRepository<T> {
 		System.out.println(String.format("class name %s", className));
 		
 		mapper = new ObjectMapper();
-		file = new File(String.format("data/%s", className));
-
-		try	{
-			if (!file.exists()) {
-				file.createNewFile();
-				System.out.println("Creating new file.");
-			}
-		}
-		catch (Exception ex) {
-			System.out.println("Could not create file.");
-			ex.printStackTrace();
-		}
+		file = new File(String.format("data/%ss.json", className));		
 		
-
-		try {
-			if (file.length() == 0) {
-				items = new ArrayList<T>();
-				mapper.writeValue(file, items);				
-			}			
-		}
-		catch (Exception ex) {
-			System.out.println("Could not write initial empty array.");
-			ex.printStackTrace();
-		}
+		if (!file.exists())
+			createFile(file);
 		
-		try {
-			System.out.println("Reading file contents into list into List");
-			
-
-			JavaType type = mapper
-				.getTypeFactory()
-				.constructCollectionType(List.class, cls);
-			
-			items = mapper.readValue(file, type);
-			System.out.println("Successfully read " + items.size() + " objects.");
-		}
-		catch (Exception ex) {
-			System.out.println("Could not read into list");
-			ex.printStackTrace();
-			items = new ArrayList<T>();
-		}
+		if (file.length() == 0)
+			initializeFile(file);
+		
+		items = Load(file, cls);
 	}
 	
 	public boolean add(T item) {
-		
-		if (exists(item)) {
-			System.out.println("Cannot add to list - item already exists.");
-			return false;
-		}
 		
 		if (!isValid(item)) {
 			System.out.println("Cannot add item - item is not valid");
 			return false;
 		}
 		
+		if (exists(item)) {
+			System.out.println("Cannot add to list - item already exists.");
+			return false;
+		}
+		
 		System.out.println("Added item to list.");
 		items.add(item);
-		Save();
+		Save(file, items);
 		return true;
 	}
 	
@@ -102,19 +69,19 @@ public abstract class Repository<T> implements IRepository<T> {
 	
 	public boolean update(T item) {
 		
-		if (!exists(item)) {
-			System.out.println("Could not find item to update.");			
-			return false;
-		}
-		
 		if (!isValid(item)) {
 			System.out.println("Cannot update item - item is not valid.");
 			return false;
 		}
 		
+		if (!exists(item)) {
+			System.out.println("Could not find item to update.");			
+			return false;
+		}
 		
+		items.set(indexOf(item), item);				
+		Save(file, items);
 		
-		Save();
 		System.out.println("Updated item.");
 		return true;
 	}
@@ -126,16 +93,30 @@ public abstract class Repository<T> implements IRepository<T> {
 			return false;
 		}
 		
-		Save();
+		Save(file, items);
 		System.out.println("Successfully updated item.");
 		return true;		
 	}
 	
 	public boolean exists(T item) {
-		return items.stream().anyMatch(listItem -> idenityComparer(listItem, item)); 
+		return items.stream().anyMatch(listItem -> item.isIdenticalTo(listItem)); 
 	}
 	
-	private void Save() {
+	private boolean isValid(T item) {
+		return item != null && item.modelIsValid();
+	}
+	
+	private int indexOf(T item) {
+		for (int i = 0; i < items.size(); i++) {
+			T listItem = items.get(i);
+			if (item.isIdenticalTo(listItem))
+				return i;
+		}
+		
+		return -1;
+	}
+	
+	private void Save(File file, List<T> items) {
 		
 		System.out.println("Saving changes.");
 		try {
@@ -144,6 +125,47 @@ public abstract class Repository<T> implements IRepository<T> {
 		}
 		catch (Exception ex) {
 			System.out.println("Could not save changes.");
+			ex.printStackTrace();
+		}
+	}
+	
+	private List<T> Load(File file, Class<T> cls) {
+		try {
+			System.out.println("Reading file contents into list into List");
+
+			JavaType type = mapper
+				.getTypeFactory()
+				.constructCollectionType(List.class, cls);
+			
+			List<T> items = mapper.readValue(file, type);
+			System.out.println("Successfully read " + items.size() + " objects.");
+			return items;
+		}
+		catch (Exception ex) {
+			System.out.println("Could not read into list");
+			ex.printStackTrace();
+			return new ArrayList<T>();
+		}
+	}
+	
+	private void createFile(File file) {
+		try	{
+			file.createNewFile();
+			System.out.println("Creating new file.");
+		}
+		catch (Exception ex) {
+			System.out.println("Could not create file.");
+			ex.printStackTrace();
+		}		
+	}
+	
+	private void initializeFile(File file) {
+		try {
+			items = new ArrayList<T>();
+			mapper.writeValue(file, items);				
+		}
+		catch (Exception ex) {
+			System.out.println("Could not write initial empty array.");
 			ex.printStackTrace();
 		}
 	}

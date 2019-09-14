@@ -1,8 +1,9 @@
 package models;
 
 import java.util.ArrayList;
+import utilities.StringExtensions;
 
-public class Student extends User {
+public class Student extends User implements IModel<Student> {
 	
 	private String email;
 	private ArrayList<String> phoneNumbers;
@@ -38,5 +39,20 @@ public class Student extends User {
 	
 	public ArrayList<String> getPhoneNumbers() {
 		return new ArrayList<String>(phoneNumbers);
+	}
+
+	@Override
+	public boolean modelIsValid() {
+		return StringExtensions.IsNullOrWhitespace(getFirstName()) && 
+			StringExtensions.IsNullOrWhitespace(getLastName()) &&
+			StringExtensions.IsNullOrWhitespace(getUserName()) &&
+			StringExtensions.IsNullOrWhitespace(getPassword()) &&
+			StringExtensions.IsNullOrWhitespace(email) &&
+			StringExtensions.IsNullOrWhitespace(cardId);
+	}
+	
+	@Override
+	public boolean isIdenticalTo(Student model) {
+		return model.getUserName().equals(getUserName());
 	}
 }
