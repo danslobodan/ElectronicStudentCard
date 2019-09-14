@@ -20,9 +20,7 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	
 	public Repository(Class<T> cls) {
 		
-		String className = cls.getSimpleName().toLowerCase();
-		System.out.println(String.format("class name %s", className));
-		
+		String className = cls.getSimpleName().toLowerCase();		
 		mapper = new ObjectMapper();
 
 		file = new File(String.format("%s/%ss.json", folder, className));		
@@ -101,7 +99,11 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	}
 	
 	public boolean exists(T item) {
-		return items.stream().anyMatch(listItem -> item.isIdenticalTo(listItem)); 
+		return exists(listItem -> item.isIdenticalTo(listItem)); 
+	}
+	
+	public boolean exists(Predicate<T> predicate) {
+		return items.stream().anyMatch(predicate);
 	}
 	
 	private boolean isValid(T item) {
