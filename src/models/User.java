@@ -1,6 +1,6 @@
 package models;
 
-public class User {
+public abstract class User {
 
 	private String firstName;
 	private String lastName;
@@ -8,7 +8,7 @@ public class User {
 	private String password;
 	private boolean isDeleted;
 
-	public User() {
+	protected User() {
 	}
 
 	public String getFirstName() {
@@ -50,7 +50,4 @@ public class User {
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-
-	
-	
 }

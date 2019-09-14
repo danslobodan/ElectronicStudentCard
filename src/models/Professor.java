@@ -3,7 +3,7 @@ package models;
 public class Professor extends User {
 
 	private String email;
-	private String title;
+	private Title title;
 	
 	public Professor() {
 	}
@@ -16,11 +16,11 @@ public class Professor extends User {
 		this.email = email;
 	}
 
-	public String getTitle() {
+	public Title getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(Title title) {
 		this.title = title;
 	}	
 }
