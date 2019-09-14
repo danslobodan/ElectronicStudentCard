@@ -3,7 +3,9 @@ package models;
 import java.time.Year;
 import java.util.ArrayList;
 
-public class StudentCard {
+import utilities.StringExtensions;
+
+public class StudentCard implements IModel<StudentCard> {
 
 	private int cardId;
 	private String faculty;
@@ -12,7 +14,6 @@ public class StudentCard {
 	private Year enrollmentYear;
 	private int curriculumYear;
 	private ArrayList<Exam> exams;
-	private Student student;
 	
 	public StudentCard() {
 	}
@@ -73,12 +74,20 @@ public class StudentCard {
 		this.exams = exams;
 	}
 
-	public Student getStudent() {
-		return student;
+	@Override
+	public boolean modelIsValid() {
+		return cardId > 0 &&
+			StringExtensions.IsNullOrWhitespace(faculty) &&
+			StringExtensions.IsNullOrWhitespace(university) &&
+			StringExtensions.IsNullOrWhitespace(curriculum) &&
+			StringExtensions.IsNullOrWhitespace(faculty) &&
+			enrollmentYear != null &&
+			curriculumYear > 0 && curriculumYear <= 5;
 	}
 
-	public void setStudent(Student student) {
-		this.student = student;
+	@Override
+	public boolean isIdenticalTo(StudentCard model) {
+		return cardId == model.cardId;
 	}
 
 	

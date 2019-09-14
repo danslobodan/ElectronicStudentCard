@@ -2,9 +2,9 @@ package models;
 
 import java.util.Date;
 
-public class Exam {
+public class Exam implements IModel<Exam> {
 
-	private String studentIndex;
+	private int studentCard;
 	private int grade;
 	private Date date;
 	private boolean isRevoked;
@@ -12,13 +12,13 @@ public class Exam {
 	
 	public Exam() {
 	}
-
-	public String getStudentIndex() {
-		return studentIndex;
+	
+	public int getStudentCard() {
+		return studentCard;
 	}
 
-	public void setStudentIndex(String studentIndex) {
-		this.studentIndex = studentIndex;
+	public void setStudentCard(int studentCard) {
+		this.studentCard = studentCard;
 	}
 
 	public int getGrade() {
@@ -53,5 +53,18 @@ public class Exam {
 		this.classId = classId;
 	}
 
-	
+	@Override
+	public boolean modelIsValid() {
+		return studentCard > 0 &&
+			grade >= 5 && grade <= 10 &&
+			classId > 0;
+	}
+
+	@Override
+	public boolean isIdenticalTo(Exam model) {
+		return studentCard == model.getStudentCard() &&
+			grade == model.getGrade() &&
+			date.equals(model.getDate()) &&
+			classId == model.getClassId();
+	}
 }
