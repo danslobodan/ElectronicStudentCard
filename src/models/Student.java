@@ -43,16 +43,13 @@ public class Student extends User implements IModel<Student> {
 
 	@Override
 	public boolean modelIsValid() {
-		return StringExtensions.IsNullOrWhitespace(getFirstName()) && 
-			StringExtensions.IsNullOrWhitespace(getLastName()) &&
-			StringExtensions.IsNullOrWhitespace(getUserName()) &&
-			StringExtensions.IsNullOrWhitespace(getPassword()) &&
+		return super.modelIsValid() &&
 			StringExtensions.IsNullOrWhitespace(email) &&
 			cardId > 0;
 	}
 	
 	@Override
 	public boolean isIdenticalTo(Student model) {
-		return model.getUserName().equals(getUserName());
+		return super.isIdenticalTo(model);
 	}
 }
