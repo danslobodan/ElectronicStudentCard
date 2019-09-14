@@ -84,7 +84,7 @@ public class UniClass implements IModel<UniClass> {
 
 	@Override
 	public boolean isIdenticalTo(UniClass model) {
-		return id == model.getId();
+		return id == model.id;
 	}
 
 }
