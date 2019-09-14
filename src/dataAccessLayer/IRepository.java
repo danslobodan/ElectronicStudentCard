@@ -1,12 +1,14 @@
 package dataAccessLayer;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
 public interface IRepository<T> {
 
-	int Add(T obj);
-	void Update(T obj);
-	T Get(int id);
-	ArrayList<T> GetAll();
-	void Delete(int id);
+	boolean add(T item);
+	boolean update(T item);
+	List<T> get(Predicate<T> filter);
+	List<T> getAll();
+	boolean delete(T item);
+	boolean exists(T item);
 }
