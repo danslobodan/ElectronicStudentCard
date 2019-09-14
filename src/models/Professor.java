@@ -32,7 +32,8 @@ public class Professor extends User implements IModel<Professor> {
 			StringExtensions.IsNullOrWhitespace(getLastName()) &&
 			StringExtensions.IsNullOrWhitespace(getUserName()) &&
 			StringExtensions.IsNullOrWhitespace(getPassword()) &&
-			StringExtensions.IsNullOrWhitespace(email);
+			StringExtensions.IsNullOrWhitespace(email) &&
+			title != null;
 	}
 
 	@Override
