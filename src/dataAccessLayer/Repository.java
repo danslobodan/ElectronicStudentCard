@@ -94,6 +94,7 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 			return false;
 		}
 		
+		items.remove(indexOf(item));
 		save();
 		System.out.println("Successfully updated item.");
 		return true;		
@@ -108,6 +109,7 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	}
 	
 	private int indexOf(T item) {
+		
 		for (int i = 0; i < items.size(); i++) {
 			T listItem = items.get(i);
 			if (item.isIdenticalTo(listItem))
