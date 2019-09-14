@@ -96,7 +96,7 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 		
 		items.remove(indexOf(item));
 		save();
-		System.out.println("Successfully updated item.");
+		System.out.println("Deleted item.");
 		return true;		
 	}
 	
