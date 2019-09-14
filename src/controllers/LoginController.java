@@ -1,17 +1,23 @@
 package controllers;
 
 import dataAccessLayer.IRepository;
+import models.Administrator;
+import models.Professor;
+import models.Student;
 import models.User;
 
 public class LoginController {
 	
-	private IRepository<? extends User> students;
-	private IRepository<? extends User> professors;
+	private IRepository<Student> students;
+	private IRepository<Professor> professors;
+	private IRepository<Administrator> administrators;
 
-	public LoginController(IRepository<? extends User> students,
-			IRepository<? extends User> professors) {
+	public LoginController(IRepository<Student> students,
+			IRepository<Professor> professors,
+			IRepository<Administrator> administrators) {
 		this.students = students;
 		this.professors = professors;
+		this.administrators = administrators;
 	}
 	
 	public boolean login(String username, String password) {
@@ -25,6 +31,12 @@ public class LoginController {
 		if (professors.exists(user -> canLogin(user, username, password))) {
 			
 			System.out.println("Logging in professor.");
+			return true;
+		}
+		
+		if (administrators.exists(user -> canLogin(user, username, password))) {
+			
+			System.out.println("Logging in administrator.");
 			return true;
 		}
 		
