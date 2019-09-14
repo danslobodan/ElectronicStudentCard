@@ -17,11 +17,15 @@ public abstract class Repository<T> implements IRepository<T> {
 	private ObjectMapper mapper;
 	
 	protected abstract boolean idenityComparer(T item1, T item2);
+	protected abstract boolean isValid(T item);
 	
-	public Repository(String fileName, Class<T> cls) {
+	public Repository(Class<T> cls) {
+		
+		String className = cls.getSimpleName().toLowerCase();
+		System.out.println(String.format("class name %s", className));
 		
 		mapper = new ObjectMapper();
-		file = new File(fileName);
+		file = new File(String.format("data/%s", className));
 
 		try	{
 			if (!file.exists()) {
@@ -47,7 +51,8 @@ public abstract class Repository<T> implements IRepository<T> {
 		}
 		
 		try {
-			System.out.println("Reading file contents into list into List");			
+			System.out.println("Reading file contents into list into List");
+			
 
 			JavaType type = mapper
 				.getTypeFactory()
@@ -67,6 +72,11 @@ public abstract class Repository<T> implements IRepository<T> {
 		
 		if (exists(item)) {
 			System.out.println("Cannot add to list - item already exists.");
+			return false;
+		}
+		
+		if (!isValid(item)) {
+			System.out.println("Cannot add item - item is not valid");
 			return false;
 		}
 		
@@ -96,6 +106,13 @@ public abstract class Repository<T> implements IRepository<T> {
 			System.out.println("Could not find item to update.");			
 			return false;
 		}
+		
+		if (!isValid(item)) {
+			System.out.println("Cannot update item - item is not valid.");
+			return false;
+		}
+		
+		
 		
 		Save();
 		System.out.println("Updated item.");
