@@ -1,8 +1,9 @@
 package models;
 
 import java.time.Year;
+import utilities.StringExtensions;
 
-public class Class {
+public class UniClass implements IModel<UniClass> {
 	
 	private int id;
 	private String name;
@@ -12,7 +13,7 @@ public class Class {
 	private int numberOfTheoryClasses;
 	private int numberOfPracticeClasses;
 
-	public Class() {
+	public UniClass() {
 	}
 
 	public int getId() {
@@ -69,6 +70,21 @@ public class Class {
 
 	public void setNumberOfPracticeClasses(int number) {
 		this.numberOfPracticeClasses = number;
+	}
+
+	@Override
+	public boolean modelIsValid() {
+		return id > 0 &&
+			curriculumYear > 0 && curriculumYear < 5 &&
+			numberOfPracticeClasses > 0 &&
+			numberOfTheoryClasses > 0 &&
+			StringExtensions.IsNullOrWhitespace(name) &&
+			StringExtensions.IsNullOrWhitespace(syllabus);
+	}
+
+	@Override
+	public boolean isIdenticalTo(UniClass model) {
+		return id == model.getId();
 	}
 
 }
