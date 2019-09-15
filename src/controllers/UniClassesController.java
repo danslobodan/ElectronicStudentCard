@@ -1,5 +1,8 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dataAccessLayer.IRepository;
 import models.UniClass;
 import utilities.Logger;
@@ -31,6 +34,10 @@ public class UniClassesController {
 		
 		if (!uniClass.modelIsValid())
 			logger.debug("Model is not valid.");
+	}
+	
+	public List<UniClass> getClasses() {
+		return new ArrayList<UniClass>(classes.getAll());
 	}
 	
 	private boolean canAdd(UniClass uniClass) {
