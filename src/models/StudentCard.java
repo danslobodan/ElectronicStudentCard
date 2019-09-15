@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,9 +16,10 @@ public class StudentCard implements IModel<StudentCard> {
 	private String curriculum;
 	private int enrollmentYear;
 	private int curriculumYear;
-	private ArrayList<Exam> exams;
+	private List<Exam> exams;
 	
 	public StudentCard() {
+		this.exams = new ArrayList<Exam>();
 	}
 
 	public int getCardId() {
@@ -68,11 +70,11 @@ public class StudentCard implements IModel<StudentCard> {
 		this.curriculumYear = curriculumYear;
 	}
 
-	public ArrayList<Exam> getExams() {
+	public List<Exam> getExams() {
 		return exams;
 	}
 
-	public void setExams(ArrayList<Exam> exams) {
+	public void setExams(List<Exam> exams) {
 		this.exams = exams;
 	}
 
