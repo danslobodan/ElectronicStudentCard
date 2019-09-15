@@ -41,11 +41,6 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 			return false;
 		}
 		
-		if (exists(item)) {
-			System.out.println("Cannot add to list - item already exists.");
-			return false;
-		}
-		
 		System.out.println("Added item to list.");
 		items.add(item);
 		save();
@@ -66,40 +61,36 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 		return new ArrayList<T>(items);
 	}
 	
-	public boolean update(T item) {
+	public boolean update(Predicate<T> predicate, T item) {
 		
 		if (!isValid(item)) {
 			System.out.println("Cannot update item - item is not valid.");
 			return false;
 		}
 		
-		if (!exists(item)) {
+		if (!exists(predicate)) {
 			System.out.println("Could not find item to update.");			
 			return false;
 		}
 		
-		items.set(indexOf(item), item);				
+		items.set(indexOf(predicate), item);
 		save();
 		
 		System.out.println("Updated item.");
 		return true;
 	}
 	
-	public boolean delete(T item) {
+	public boolean delete(Predicate<T> predicate) {
 		
-		if (!exists(item)) {
+		if (!exists(predicate)) {
 			System.out.println("Could not delete item - item not found.");			
 			return false;
 		}
 		
-		items.remove(indexOf(item));
+		items.remove(indexOf(predicate));
 		save();
 		System.out.println("Deleted item.");
 		return true;		
-	}
-	
-	public boolean exists(T item) {
-		return exists(listItem -> item.isIdenticalTo(listItem)); 
 	}
 	
 	public boolean exists(Predicate<T> predicate) {
@@ -110,11 +101,11 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 		return item != null && item.modelIsValid();
 	}
 	
-	private int indexOf(T item) {
+	private int indexOf(Predicate<T> predicate) {
 		
 		for (int i = 0; i < items.size(); i++) {
 			T listItem = items.get(i);
-			if (item.isIdenticalTo(listItem))
+			if (predicate.test(listItem))
 				return i;
 		}
 		

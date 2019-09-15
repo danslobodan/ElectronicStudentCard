@@ -3,13 +3,14 @@ package dataAccessLayer;
 import java.util.List;
 import java.util.function.Predicate;
 
-public interface IRepository<T> {
+import models.IModel;
+
+public interface IRepository<T extends IModel<T>> {
 
 	boolean add(T item);
-	boolean update(T item);
+	boolean update(Predicate<T> predicate, T item);
 	List<T> get(Predicate<T> filter);
 	List<T> getAll();
-	boolean delete(T item);
-	boolean exists(T item);
+	boolean delete(Predicate<T> predicate);
 	boolean exists(Predicate<T> predicate);
 }
