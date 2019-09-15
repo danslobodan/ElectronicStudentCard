@@ -11,13 +11,16 @@ public class LoginController {
 	private IRepository<Student> students;
 	private IRepository<Professor> professors;
 	private IRepository<Administrator> administrators;
+	private ILogin login;
 
 	public LoginController(IRepository<Student> students,
 			IRepository<Professor> professors,
-			IRepository<Administrator> administrators) {
+			IRepository<Administrator> administrators,
+			ILogin login) {
 		this.students = students;
 		this.professors = professors;
 		this.administrators = administrators;
+		this.login = login;
 	}
 	
 	public boolean login(String username, String password) {
@@ -25,23 +28,39 @@ public class LoginController {
 		if (students.exists(user -> canLogin(user, username, password))) {
 			
 			System.out.println("Logging in student.");
+			var student = students
+				.get(user -> user.getUserName().equals(username))
+				.iterator().next();
+			login.login(student);
 			return true;
 		}
 		
 		if (professors.exists(user -> canLogin(user, username, password))) {
 			
 			System.out.println("Logging in professor.");
+			var professor = professors
+				.get(user -> user.getUserName().equals(username))
+				.iterator().next();
+			login.login(professor);
 			return true;
 		}
 		
 		if (administrators.exists(user -> canLogin(user, username, password))) {
 			
 			System.out.println("Logging in administrator.");
+			var admin = administrators
+				.get(user -> user.getUserName().equals(username))
+				.iterator().next();
+			login.login(admin);
 			return true;
 		}
 		
 		System.out.println("Username and password do not match for any active user.");
 		return false;
+	}
+	
+	public void logout() {
+		login.logout();
 	}
 	
 	private boolean canLogin(User user, String username, String password) {
