@@ -5,10 +5,10 @@ import utilities.StringExtensions;
 
 public class UniClass implements IModel<UniClass> {
 	
-	private int id;
+	private String id;
 	private String name;
 	private String syllabus;
-	private Year calendarYear;
+	private int calendarYear;
 	private int curriculumYear;
 	private int numberOfTheoryClasses;
 	private int numberOfPracticeClasses;
@@ -16,11 +16,11 @@ public class UniClass implements IModel<UniClass> {
 	public UniClass() {
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -40,12 +40,12 @@ public class UniClass implements IModel<UniClass> {
 		this.syllabus = syllabus;
 	}
 
-	public Year getCalendarYear() {
+	public int getCalendarYear() {
 		return calendarYear;
 	}
 
-	public void setCalendarYear(Year calendarYear) {
-		this.calendarYear = calendarYear;
+	public void setCalendarYear(int year) {
+		this.calendarYear = year;
 	}
 
 	public int getCurriculumYear() {
@@ -74,7 +74,7 @@ public class UniClass implements IModel<UniClass> {
 
 	@Override
 	public boolean modelIsValid() {
-		return id > 0 &&
+		return calendarYear > 1900 && calendarYear < 2100 && 
 			curriculumYear > 0 && curriculumYear < 5 &&
 			numberOfPracticeClasses > 0 &&
 			numberOfTheoryClasses > 0 &&
