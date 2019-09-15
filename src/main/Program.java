@@ -56,7 +56,7 @@ public class Program {
 		
 		Student student = new Student();
 		student.setUserName("s.dan");
-		student.setPassword("volimsokodkruske");
+		student.setPassword("s.dan");
 		student.setFirstName("Slobodan");
 		student.setLastName("Dan");
 		student.setCardId(2018271337);
@@ -80,7 +80,7 @@ public class Program {
 		
 		var professor = new Professor();
 		professor.setUserName("a.mitrovic");
-		professor.setPassword("alganigdenema");
+		professor.setPassword("a.mitrovic");
 		professor.setFirstName("Aleksandra");
 		professor.setLastName("Mitrovic");
 		professor.setTitle(Title.AssistantProfessor);
