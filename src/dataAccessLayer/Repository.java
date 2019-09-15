@@ -24,12 +24,15 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 		mapper = new ObjectMapper();
 
 		file = new File(String.format("%s/%ss.json", folder, className));		
+		System.out.println(String.format("Loading %ss from file %s", className, file.getPath()));
 		
 		if (!file.exists())
 			createFile(file);
 		
-		if (file.length() == 0)
+		if (file.length() == 0) {
+			System.out.println("File empty. Initializing empty array.");
 			items = new ArrayList<T>();
+		}
 		else
 			load(cls);
 	}
