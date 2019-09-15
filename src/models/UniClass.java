@@ -78,7 +78,7 @@ public class UniClass implements IModel<UniClass> {
 			curriculumYear > 0 && curriculumYear < 5 &&
 			numberOfPracticeClasses > 0 &&
 			numberOfTheoryClasses > 0 &&
-			StringExtensions.IsNullOrWhitespace(name) &&
-			StringExtensions.IsNullOrWhitespace(syllabus);
+			!StringExtensions.IsNullOrWhitespace(name) &&
+			!StringExtensions.IsNullOrWhitespace(syllabus);
 	}
 }

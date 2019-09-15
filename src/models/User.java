@@ -54,9 +54,9 @@ public abstract class User {
 	}
 	
 	public boolean modelIsValid() {
-		return StringExtensions.IsNullOrWhitespace(getFirstName()) && 
-			StringExtensions.IsNullOrWhitespace(getLastName()) &&
-			StringExtensions.IsNullOrWhitespace(getUserName()) &&
-			StringExtensions.IsNullOrWhitespace(getPassword());
+		return !StringExtensions.IsNullOrWhitespace(firstName) && 
+			!StringExtensions.IsNullOrWhitespace(lastName) &&
+			!StringExtensions.IsNullOrWhitespace(userName) &&
+			!StringExtensions.IsNullOrWhitespace(password);
 	}
 }

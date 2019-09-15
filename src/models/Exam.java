@@ -2,13 +2,15 @@ package models;
 
 import java.util.Date;
 
+import utilities.StringExtensions;
+
 public class Exam implements IModel<Exam> {
 
 	private int studentCard;
 	private int grade;
 	private Date date;
 	private boolean isRevoked;
-	private int classId;
+	private String classId;
 	
 	public Exam() {
 	}
@@ -45,11 +47,11 @@ public class Exam implements IModel<Exam> {
 		this.isRevoked = isRevoked;
 	}
 
-	public int getClassId() {
+	public String getClassId() {
 		return classId;
 	}
 
-	public void setClassId(int classId) {
+	public void setClassId(String classId) {
 		this.classId = classId;
 	}
 
@@ -57,6 +59,6 @@ public class Exam implements IModel<Exam> {
 	public boolean modelIsValid() {
 		return studentCard > 0 &&
 			grade >= 5 && grade <= 10 &&
-			classId > 0;
+			!StringExtensions.IsNullOrWhitespace(classId);
 	}
 }

@@ -29,7 +29,7 @@ public class Professor extends User implements IModel<Professor> {
 	@Override
 	public boolean modelIsValid() {
 		return super.modelIsValid() &&
-			StringExtensions.IsNullOrWhitespace(email) &&
+			!StringExtensions.IsNullOrWhitespace(email) &&
 			title != null;
 	}
 }

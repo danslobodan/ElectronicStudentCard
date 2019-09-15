@@ -77,10 +77,10 @@ public class StudentCard implements IModel<StudentCard> {
 	@Override
 	public boolean modelIsValid() {
 		return cardId > 0 &&
-			StringExtensions.IsNullOrWhitespace(faculty) &&
-			StringExtensions.IsNullOrWhitespace(university) &&
-			StringExtensions.IsNullOrWhitespace(curriculum) &&
-			StringExtensions.IsNullOrWhitespace(faculty) &&
+			!StringExtensions.IsNullOrWhitespace(faculty) &&
+			!StringExtensions.IsNullOrWhitespace(university) &&
+			!StringExtensions.IsNullOrWhitespace(curriculum) &&
+			!StringExtensions.IsNullOrWhitespace(faculty) &&
 			enrollmentYear != null &&
 			curriculumYear > 0 && curriculumYear <= 5;
 	}
