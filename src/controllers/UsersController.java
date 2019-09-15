@@ -32,16 +32,17 @@ public class UsersController {
 	public void add(Student student) {
 		
 		if (canAdd(student) && !students.exists(stud -> stud.getCardId() == student.getCardId())) {
+			logger.debug("Adding user %s", student.getUserName());
 			students.add(student);
 		}
-		
-		
 	}
 	
 	public void update(Student student) {
 		
-		if (canUpdate(student))
+		if ( canUpdate(student)) {
+			logger.debug("Updating user %s", student.getUserName());			
 			students.update(stud -> findUser(student, stud), student);
+		}
 	}
 	
 	public Student getStudent(String username) {
@@ -57,6 +58,7 @@ public class UsersController {
 	public void delete(Student student) {
 		
 		if (canUpdate(student)) {
+			logger.debug("Deleting user %s", student.getUserName());
 			student.setDeleted(true);
 			students.update(stud -> findUser(student, stud), student);
 		}
@@ -129,7 +131,7 @@ public class UsersController {
 			!students.exists(student -> findUser(user, student)) &&
 			!professors.exists(professor -> findUser(user, professor)) &&
 			!administrators.exists(admin -> findUser(user, admin));
-		logger.debug(String.format("Username %s available: %b", user.getUserName(), available));
+		logger.debug("Username %s available: %b", user.getUserName(), available);
 		return available;
 	}
 	

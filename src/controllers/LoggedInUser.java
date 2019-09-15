@@ -19,7 +19,7 @@ public class LoggedInUser implements ILogin {
 	}
 
 	public String getDisplayName() {
-		logger.debug(String.format("Currently logged in: %s", displayName));
+		logger.debug("Currently logged in: %s", displayName);
 		return displayName;
 	}
 	

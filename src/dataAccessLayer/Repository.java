@@ -17,6 +17,7 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	
 	private Logger logger = Logger.GetLogger(this);
 	
+	private String className;
 	private File file;
 	private List<T> items;
 	private ObjectMapper mapper;
@@ -24,11 +25,11 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	
 	public Repository(Class<T> cls) {
 		
-		String className = cls.getSimpleName().toLowerCase();		
+		className = cls.getSimpleName().toLowerCase();		
 		mapper = new ObjectMapper();
 
 		file = new File(String.format("%s/%ss.json", folder, className));		
-		logger.debug(String.format("Loading %ss from file %s", className, file.getPath()));
+		logger.debug("Loading %ss from file %s", className, file.getPath());
 		
 		if (!file.exists())
 			createFile(file);
@@ -44,7 +45,7 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	public boolean add(T item) {
 		
 		if (!isValid(item)) {
-			logger.debug("Cannot add item - item is not valid");
+			logger.debug("Cannot add %s - it is not valid", className);
 			return false;
 		}
 		
@@ -153,11 +154,11 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 		try	{
 			var localFolder = new File(file.getParent());
 			if (!localFolder.exists()) {
-				logger.debug(String.format("Creating folder %s", folder));
+				logger.debug("Creating folder %s", folder);
 				localFolder.mkdir();
 			}
 			
-			logger.debug(String.format("Creating file %s", file.getPath()));
+			logger.debug("Creating file %s", file.getPath());
 			file.createNewFile();
 		}
 		catch (Exception ex) {
