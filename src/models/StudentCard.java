@@ -1,17 +1,19 @@
 package models;
 
-import java.time.Year;
 import java.util.ArrayList;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import utilities.StringExtensions;
 
+@JsonIgnoreProperties(value = { "exams" })
 public class StudentCard implements IModel<StudentCard> {
 
 	private int cardId;
 	private String faculty;
 	private String university;
 	private String curriculum;
-	private Year enrollmentYear;
+	private int enrollmentYear;
 	private int curriculumYear;
 	private ArrayList<Exam> exams;
 	
@@ -50,11 +52,11 @@ public class StudentCard implements IModel<StudentCard> {
 		this.curriculum = curriculum;
 	}
 
-	public Year getEnrollmentYear() {
+	public int getEnrollmentYear() {
 		return enrollmentYear;
 	}
 
-	public void setEnrollmentYear(Year enrollmentYear) {
+	public void setEnrollmentYear(int enrollmentYear) {
 		this.enrollmentYear = enrollmentYear;
 	}
 
@@ -81,7 +83,7 @@ public class StudentCard implements IModel<StudentCard> {
 			!StringExtensions.IsNullOrWhitespace(university) &&
 			!StringExtensions.IsNullOrWhitespace(curriculum) &&
 			!StringExtensions.IsNullOrWhitespace(faculty) &&
-			enrollmentYear != null &&
+			enrollmentYear > 1900 && enrollmentYear < 2100 &&
 			curriculumYear > 0 && curriculumYear <= 5;
 	}
 }
