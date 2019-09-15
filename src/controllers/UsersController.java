@@ -1,12 +1,15 @@
 package controllers;
 
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
 import dataAccessLayer.IRepository;
 import models.Administrator;
+import models.Exam;
 import models.Professor;
 import models.Student;
+import models.StudentCard;
 import models.User;
 import utilities.Logger;
 
@@ -17,29 +20,39 @@ public class UsersController {
 	private IRepository<Student> students;
 	private IRepository<Professor> professors;
 	private IRepository<Administrator> administrators;
+	private IRepository<StudentCard> studentCards;
 	private ILogin login;
 	
-	public UsersController(IRepository<Student> students,
+	public UsersController(
+			IRepository<Student> students,
 			IRepository<Professor> professors,
 			IRepository<Administrator> administrators,
+			IRepository<StudentCard> studentCards,
 			ILogin login) {
 		this.students = students;
 		this.professors = professors;
 		this.administrators = administrators;
+		this.studentCards = studentCards;
 		this.login = login;
 	}
 
-	public void add(Student student) {
+	public void add(Student student, StudentCard studentCard) {
 		
-		if (canAdd(student) && !students.exists(stud -> stud.getCardId() == student.getCardId())) {
+		if (canAdd(student) &&
+			studentCard != null && studentCard.modelIsValid() &&
+			!studentCards.exists(card -> card.getCardId() == studentCard.getCardId())) {
+			
 			logger.debug("Adding student user %s", student.getUserName());
+			student.setCardId(studentCard.getCardId());
+			
+			studentCards.add(studentCard);
 			students.add(student);
 		}
 	}
 	
 	public void update(Student student) {
 		
-		if ( canUpdate(student)) {
+		if (canUpdate(student)) {
 			logger.debug("Updating student user %s", student.getUserName());			
 			students.update(stud -> findUser(student, stud), student);
 		}
