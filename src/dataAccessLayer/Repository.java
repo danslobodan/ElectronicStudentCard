@@ -1,6 +1,7 @@
 package dataAccessLayer;
 
 import java.io.File;
+
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -10,8 +11,11 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import models.IModel;
+import utilities.Logger;
 
 public class Repository<T extends IModel<T>> implements IRepository<T> {
+	
+	private Logger logger = Logger.GetLogger(this);
 	
 	private File file;
 	private List<T> items;
@@ -24,13 +28,13 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 		mapper = new ObjectMapper();
 
 		file = new File(String.format("%s/%ss.json", folder, className));		
-		System.out.println(String.format("Loading %ss from file %s", className, file.getPath()));
+		logger.debug(String.format("Loading %ss from file %s", className, file.getPath()));
 		
 		if (!file.exists())
 			createFile(file);
 		
 		if (file.length() == 0) {
-			System.out.println("File empty. Initializing empty array.");
+			logger.debug("File empty. Initializing empty array.");
 			items = new ArrayList<T>();
 		}
 		else
@@ -40,11 +44,11 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	public boolean add(T item) {
 		
 		if (!isValid(item)) {
-			System.out.println("Cannot add item - item is not valid");
+			logger.debug("Cannot add item - item is not valid");
 			return false;
 		}
 		
-		System.out.println("Added item to list.");
+		logger.debug("Added item to list.");
 		items.add(item);
 		save();
 		return true;
@@ -67,32 +71,32 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	public boolean update(Predicate<T> predicate, T item) {
 		
 		if (!isValid(item)) {
-			System.out.println("Cannot update item - item is not valid.");
+			logger.debug("Cannot update item - item is not valid.");
 			return false;
 		}
 		
 		if (!exists(predicate)) {
-			System.out.println("Could not find item to update.");			
+			logger.debug("Could not find item to update.");			
 			return false;
 		}
 		
 		items.set(indexOf(predicate), item);
 		save();
 		
-		System.out.println("Updated item.");
+		logger.debug("Updated item.");
 		return true;
 	}
 	
 	public boolean delete(Predicate<T> predicate) {
 		
 		if (!exists(predicate)) {
-			System.out.println("Could not delete item - item not found.");			
+			logger.debug("Could not delete item - item not found.");			
 			return false;
 		}
 		
 		items.remove(indexOf(predicate));
 		save();
-		System.out.println("Deleted item.");
+		logger.debug("Deleted item.");
 		return true;		
 	}
 	
@@ -117,29 +121,29 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	
 	private void save() {
 		
-		System.out.println("Saving changes.");
+		logger.debug("Saving changes.");
 		try {
 			mapper.writeValue(file, items);
 		}
 		catch (Exception ex) {
-			System.out.println("Could not save changes.");
+			logger.debug("Could not save changes.");
 			ex.printStackTrace();
 		}
 	}
 	
 	private void load(Class<T> cls) {
 		try {
-			System.out.println("Reading file contents into list into List");
+			logger.debug("Reading file contents into list into List");
 
 			JavaType type = mapper
 				.getTypeFactory()
 				.constructCollectionType(List.class, cls);
 			
 			items = mapper.readValue(file, type);
-			System.out.println("Successfully read " + items.size() + " objects.");
+			logger.debug("Successfully read " + items.size() + " objects.");
 		}
 		catch (Exception ex) {
-			System.out.println("Could not read into list");
+			logger.debug("Could not read into list");
 			ex.printStackTrace();
 			items = new ArrayList<T>();
 		}
@@ -149,15 +153,15 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 		try	{
 			var localFolder = new File(file.getParent());
 			if (!localFolder.exists()) {
-				System.out.println(String.format("Creating folder %s", folder));
+				logger.debug(String.format("Creating folder %s", folder));
 				localFolder.mkdir();
 			}
 			
-			System.out.println(String.format("Creating file %s", file.getPath()));
+			logger.debug(String.format("Creating file %s", file.getPath()));
 			file.createNewFile();
 		}
 		catch (Exception ex) {
-			System.out.println("Could not create file.");
+			logger.debug("Could not create file.");
 			ex.printStackTrace();
 		}		
 	}

@@ -5,8 +5,11 @@ import models.Administrator;
 import models.Professor;
 import models.Student;
 import models.User;
+import utilities.Logger;
 
 public class LoginController {
+	
+	private Logger logger = Logger.GetLogger(this);
 	
 	private IRepository<Student> students;
 	private IRepository<Professor> professors;
@@ -27,7 +30,7 @@ public class LoginController {
 		
 		if (students.exists(user -> canLogin(user, username, password))) {
 			
-			System.out.println("Logging in student.");
+			logger.debug("Logging in student.");
 			var student = students
 				.get(user -> user.getUserName().equals(username))
 				.iterator().next();
@@ -37,7 +40,7 @@ public class LoginController {
 		
 		if (professors.exists(user -> canLogin(user, username, password))) {
 			
-			System.out.println("Logging in professor.");
+			logger.debug("Logging in professor.");
 			var professor = professors
 				.get(user -> user.getUserName().equals(username))
 				.iterator().next();
@@ -47,7 +50,7 @@ public class LoginController {
 		
 		if (administrators.exists(user -> canLogin(user, username, password))) {
 			
-			System.out.println("Logging in administrator.");
+			logger.debug("Logging in administrator.");
 			var admin = administrators
 				.get(user -> user.getUserName().equals(username))
 				.iterator().next();
@@ -55,7 +58,7 @@ public class LoginController {
 			return true;
 		}
 		
-		System.out.println("Username and password do not match for any active user.");
+		logger.debug("Username and password do not match for any active user.");
 		return false;
 	}
 	

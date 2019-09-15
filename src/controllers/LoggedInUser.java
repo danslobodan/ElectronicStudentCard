@@ -3,8 +3,11 @@ package controllers;
 import models.Administrator;
 import models.Professor;
 import models.Student;
+import utilities.Logger;
 
 public class LoggedInUser implements ILogin {
+	
+	private Logger logger = Logger.GetLogger(this);
 
 	private static final String anonymous = "Anonymous";
 	private String displayName;
@@ -16,7 +19,7 @@ public class LoggedInUser implements ILogin {
 	}
 
 	public String getDisplayName() {
-		System.out.println(String.format("Currently logged in: %s", displayName));
+		logger.debug(String.format("Currently logged in: %s", displayName));
 		return displayName;
 	}
 	

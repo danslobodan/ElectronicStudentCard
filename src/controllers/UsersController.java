@@ -8,8 +8,11 @@ import models.Administrator;
 import models.Professor;
 import models.Student;
 import models.User;
+import utilities.Logger;
 
 public class UsersController {
+	
+	private Logger logger = Logger.GetLogger(this);
 
 	private IRepository<Student> students;
 	private IRepository<Professor> professors;
@@ -28,9 +31,11 @@ public class UsersController {
 
 	public void add(Student student) {
 		
-		if (canAdd(student)) {
+		if (canAdd(student) && !students.exists(stud -> stud.getCardId() == student.getCardId())) {
 			students.add(student);
 		}
+		
+		
 	}
 	
 	public void update(Student student) {
@@ -120,10 +125,12 @@ public class UsersController {
 	}
 	
 	public boolean usernameAvailable(User user) {
-		
-		return !students.exists(student -> findUser(user, student)) &&
+		var available =
+			!students.exists(student -> findUser(user, student)) &&
 			!professors.exists(professor -> findUser(user, professor)) &&
 			!administrators.exists(admin -> findUser(user, admin));
+		logger.debug(String.format("Username %s available: %b", user.getUserName(), available));
+		return available;
 	}
 	
 	private boolean hasAccess() {
