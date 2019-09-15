@@ -32,9 +32,4 @@ public class Professor extends User implements IModel<Professor> {
 			StringExtensions.IsNullOrWhitespace(email) &&
 			title != null;
 	}
-
-	@Override
-	public boolean isIdenticalTo(Professor model) {
-		return super.isIdenticalTo(model);
-	}	
 }

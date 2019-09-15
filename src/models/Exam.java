@@ -59,12 +59,4 @@ public class Exam implements IModel<Exam> {
 			grade >= 5 && grade <= 10 &&
 			classId > 0;
 	}
-
-	@Override
-	public boolean isIdenticalTo(Exam model) {
-		return studentCard == model.getStudentCard() &&
-			grade == model.getGrade() &&
-			date.equals(model.getDate()) &&
-			classId == model.getClassId();
-	}
 }

@@ -59,8 +59,4 @@ public abstract class User {
 			StringExtensions.IsNullOrWhitespace(getUserName()) &&
 			StringExtensions.IsNullOrWhitespace(getPassword());
 	}
-
-	public boolean isIdenticalTo(User model) {
-		return model.getUserName().equals(getUserName());
-	}
 }

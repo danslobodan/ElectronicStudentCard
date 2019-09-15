@@ -84,11 +84,4 @@ public class StudentCard implements IModel<StudentCard> {
 			enrollmentYear != null &&
 			curriculumYear > 0 && curriculumYear <= 5;
 	}
-
-	@Override
-	public boolean isIdenticalTo(StudentCard model) {
-		return cardId == model.cardId;
-	}
-
-	
 }

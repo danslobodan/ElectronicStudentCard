@@ -81,10 +81,4 @@ public class UniClass implements IModel<UniClass> {
 			StringExtensions.IsNullOrWhitespace(name) &&
 			StringExtensions.IsNullOrWhitespace(syllabus);
 	}
-
-	@Override
-	public boolean isIdenticalTo(UniClass model) {
-		return id == model.id;
-	}
-
 }

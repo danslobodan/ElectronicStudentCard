@@ -47,9 +47,4 @@ public class Student extends User implements IModel<Student> {
 			StringExtensions.IsNullOrWhitespace(email) &&
 			cardId > 0;
 	}
-	
-	@Override
-	public boolean isIdenticalTo(Student model) {
-		return super.isIdenticalTo(model);
-	}
 }
