@@ -44,7 +44,6 @@ public class Student extends User implements IModel<Student> {
 	@Override
 	public boolean modelIsValid() {
 		return super.modelIsValid() &&
-			!StringExtensions.IsNullOrWhitespace(email) &&
-			cardId > 0;
+			!StringExtensions.IsNullOrWhitespace(email);
 	}
 }
