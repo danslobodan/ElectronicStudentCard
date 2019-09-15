@@ -1,1 +1,30 @@
-[{"firstName":"Slobodan","lastName":"Dan","userName":"s.dan","password":"s.dan","email":"slobodan.dan.18@singimail.rs","phoneNumbers":[],"cardId":2018271337,"deleted":false}]
+[{
+    "firstName": "Slobodan",
+    "lastName": "Dan",
+    "userName": "s.dan",
+    "password": "s.dan",
+    "email": "slobodan.dan.18@singimail.rs",
+    "phoneNumbers": [],
+    "cardId": 2018271337,
+    "deleted": false
+},
+{
+    "firstName": "Petar",
+    "lastName": "Petrovic",
+    "userName": "p.petrovic",
+    "password": "p.petrovic",
+    "email": "petar.petrovic.18@singimail.rs",
+    "phoneNumbers": [],
+    "cardId": 2018271338,
+    "deleted": false
+},
+{
+    "firstName": "Biljana",
+    "lastName": "Biljic",
+    "userName": "b.biljic",
+    "password": "b.biljic",
+    "email": "biljana.biljic.18@singimail.rs",
+    "phoneNumbers": [],
+    "cardId": 2018271339,
+    "deleted": false
+}]
