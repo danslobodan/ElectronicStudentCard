@@ -7,8 +7,10 @@ import utilities.StringExtensions;
 public class Exam implements IModel<Exam> {
 
 	private int studentCard;
+	private int points;
 	private int grade;
 	private Date date;
+	private ExamTerm examTerm;
 	private boolean isRevoked;
 	private String classId;
 	
@@ -23,6 +25,14 @@ public class Exam implements IModel<Exam> {
 		this.studentCard = studentCard;
 	}
 
+	public int getPoints() {
+		return points;
+	}
+	
+	public void setPoints(int points) {
+		this.points = points;
+	}
+	
 	public int getGrade() {
 		return grade;
 	}
@@ -37,6 +47,14 @@ public class Exam implements IModel<Exam> {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	
+	public ExamTerm getExamTerm() {
+		return examTerm;
+	}
+
+	public void setExamTerm(ExamTerm examTerm) {
+		this.examTerm = examTerm;
 	}
 
 	public boolean isRevoked() {
@@ -58,7 +76,7 @@ public class Exam implements IModel<Exam> {
 	@Override
 	public boolean modelIsValid() {
 		return studentCard > 0 &&
-			grade >= 5 && grade <= 10 &&
+			examTerm != null &&
 			!StringExtensions.IsNullOrWhitespace(classId);
 	}
 }
