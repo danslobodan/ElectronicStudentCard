@@ -32,7 +32,7 @@ public class UsersController {
 	public void add(Student student) {
 		
 		if (canAdd(student) && !students.exists(stud -> stud.getCardId() == student.getCardId())) {
-			logger.debug("Adding user %s", student.getUserName());
+			logger.debug("Adding student user %s", student.getUserName());
 			students.add(student);
 		}
 	}
@@ -40,7 +40,7 @@ public class UsersController {
 	public void update(Student student) {
 		
 		if ( canUpdate(student)) {
-			logger.debug("Updating user %s", student.getUserName());			
+			logger.debug("Updating student user %s", student.getUserName());			
 			students.update(stud -> findUser(student, stud), student);
 		}
 	}
@@ -58,7 +58,7 @@ public class UsersController {
 	public void delete(Student student) {
 		
 		if (canUpdate(student)) {
-			logger.debug("Deleting user %s", student.getUserName());
+			logger.debug("Deleting student user %s", student.getUserName());
 			student.setDeleted(true);
 			students.update(stud -> findUser(student, stud), student);
 		}
@@ -66,13 +66,16 @@ public class UsersController {
 	
 	public void add(Professor professor) {
 		
-		if (canAdd(professor))
+		if (canAdd(professor)) {
+			logger.debug("Adding professor user %s", professor.getUserName());
 			professors.add(professor);
+		}
 	}
 	
 	public void update(Professor professor) {
 		
 		if (canUpdate(professor)) {
+			logger.debug("Updating professor user %s", professor.getUserName());
 			professors.update(prof -> findUser(professor, prof), professor);
 		}
 	}
@@ -90,6 +93,7 @@ public class UsersController {
 	public void delete(Professor professor) {
 		
 		if (canUpdate(professor)) {
+			logger.debug("Deleting professor user %s", professor.getUserName());
 			professor.setDeleted(true);
 			professors.update(prof -> findUser(professor, prof), professor);
 		}
@@ -97,13 +101,16 @@ public class UsersController {
 	
 	public void add(Administrator administrator) {
 		
-		if (canAdd(administrator))
+		if (canAdd(administrator)) {
+			logger.debug("Adding administrator %s", administrator.getUserName());
 			administrators.add(administrator);
+		}
 	}
 	
 	public void update(Administrator administrator) {
 		
 		if (canUpdate(administrator) && !login.getUserName().equals(administrator.getUserName())) {
+			logger.debug("Updating administrator %s", administrator.getUserName());
 			administrators.update(admin -> findUser(admin, administrator), administrator);
 		}
 	}
@@ -121,6 +128,7 @@ public class UsersController {
 	public void delete(Administrator administrator) {
 		
 		if (canUpdate(administrator) && !login.getUserName().equals(administrator.getUserName())) {
+			logger.debug("Deleting administrator %s", administrator.getUserName());
 			administrator.setDeleted(true);
 			administrators.update(admin -> findUser(admin, administrator), administrator);
 		}
@@ -131,7 +139,7 @@ public class UsersController {
 			!students.exists(student -> findUser(user, student)) &&
 			!professors.exists(professor -> findUser(user, professor)) &&
 			!administrators.exists(admin -> findUser(user, admin));
-		logger.debug("Username %s available: %b", user.getUserName(), available);
+		logger.debug("Username %s is available: %b", user.getUserName(), available);
 		return available;
 	}
 	

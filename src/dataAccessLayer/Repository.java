@@ -49,7 +49,7 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 			return false;
 		}
 		
-		logger.debug("Added item to list.");
+		logger.debug("Added %s to list.", className);
 		items.add(item);
 		save();
 		return true;
@@ -72,32 +72,32 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	public boolean update(Predicate<T> predicate, T item) {
 		
 		if (!isValid(item)) {
-			logger.debug("Cannot update item - item is not valid.");
+			logger.debug("Cannot update %s - it is not valid.", className);
 			return false;
 		}
 		
 		if (!exists(predicate)) {
-			logger.debug("Could not find item to update.");			
+			logger.debug("Could not find %s to update.", className);
 			return false;
 		}
 		
 		items.set(indexOf(predicate), item);
 		save();
 		
-		logger.debug("Updated item.");
+		logger.debug("Updated %s.", className);
 		return true;
 	}
 	
 	public boolean delete(Predicate<T> predicate) {
 		
 		if (!exists(predicate)) {
-			logger.debug("Could not delete item - item not found.");			
+			logger.debug("Could not delete %s - item not found.", className);			
 			return false;
 		}
 		
 		items.remove(indexOf(predicate));
 		save();
-		logger.debug("Deleted item.");
+		logger.debug("Deleted %s.", className);
 		return true;		
 	}
 	
@@ -122,7 +122,7 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	
 	private void save() {
 		
-		logger.debug("Saving changes.");
+		logger.debug("Saving changes to %ss.", className);
 		try {
 			mapper.writeValue(file, items);
 		}
@@ -133,15 +133,16 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	}
 	
 	private void load(Class<T> cls) {
+		
+		logger.debug("Reading file contents into list into List");
 		try {
-			logger.debug("Reading file contents into list into List");
 
 			JavaType type = mapper
 				.getTypeFactory()
 				.constructCollectionType(List.class, cls);
 			
 			items = mapper.readValue(file, type);
-			logger.debug("Successfully read " + items.size() + " objects.");
+			logger.debug("Read %s %ss to list", items.size(), className);
 		}
 		catch (Exception ex) {
 			logger.debug("Could not read into list");
