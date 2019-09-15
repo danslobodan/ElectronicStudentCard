@@ -7,6 +7,6 @@ public class StringExtensions {
 	}
 
 	public static boolean IsNullOrWhitespace(String str) {
-		return str != null &&  !str.isBlank();
+		return str == null || str.isBlank();
 	}
 }

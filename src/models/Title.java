@@ -1,9 +1,9 @@
 package models;
 
 public enum Title {
-	associate,
-	assistantProfessor,
-	associateProfessor,
-	visitingProfessor,
-	fullProfessor
+	Associate,
+	AssistantProfessor,
+	AssociateProfessor,
+	VisitingProfessor,
+	FullProfessor
 }

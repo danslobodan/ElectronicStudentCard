@@ -1,5 +1,7 @@
 package models;
 
+import utilities.StringExtensions;
+
 public abstract class User {
 
 	private String firstName;
@@ -49,5 +51,12 @@ public abstract class User {
 
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	
+	public boolean modelIsValid() {
+		return !StringExtensions.IsNullOrWhitespace(firstName) && 
+			!StringExtensions.IsNullOrWhitespace(lastName) &&
+			!StringExtensions.IsNullOrWhitespace(userName) &&
+			!StringExtensions.IsNullOrWhitespace(password);
 	}
 }

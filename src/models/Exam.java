@@ -2,13 +2,17 @@ package models;
 
 import java.util.Date;
 
+import utilities.StringExtensions;
+
 public class Exam implements IModel<Exam> {
 
 	private int studentCard;
+	private int points;
 	private int grade;
 	private Date date;
+	private ExamTerm examTerm;
 	private boolean isRevoked;
-	private int classId;
+	private String classId;
 	
 	public Exam() {
 	}
@@ -21,6 +25,14 @@ public class Exam implements IModel<Exam> {
 		this.studentCard = studentCard;
 	}
 
+	public int getPoints() {
+		return points;
+	}
+	
+	public void setPoints(int points) {
+		this.points = points;
+	}
+	
 	public int getGrade() {
 		return grade;
 	}
@@ -36,6 +48,14 @@ public class Exam implements IModel<Exam> {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	
+	public ExamTerm getExamTerm() {
+		return examTerm;
+	}
+
+	public void setExamTerm(ExamTerm examTerm) {
+		this.examTerm = examTerm;
+	}
 
 	public boolean isRevoked() {
 		return isRevoked;
@@ -45,26 +65,18 @@ public class Exam implements IModel<Exam> {
 		this.isRevoked = isRevoked;
 	}
 
-	public int getClassId() {
+	public String getClassId() {
 		return classId;
 	}
 
-	public void setClassId(int classId) {
+	public void setClassId(String classId) {
 		this.classId = classId;
 	}
 
 	@Override
 	public boolean modelIsValid() {
 		return studentCard > 0 &&
-			grade >= 5 && grade <= 10 &&
-			classId > 0;
-	}
-
-	@Override
-	public boolean isIdenticalTo(Exam model) {
-		return studentCard == model.getStudentCard() &&
-			grade == model.getGrade() &&
-			date.equals(model.getDate()) &&
-			classId == model.getClassId();
+			examTerm != null &&
+			!StringExtensions.IsNullOrWhitespace(classId);
 	}
 }

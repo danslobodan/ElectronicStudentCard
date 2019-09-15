@@ -1,0 +1,27 @@
+[{
+    "studentCard": 2018271337,
+    "points": 91,
+    "grade": 10,
+    "date": 1568570495769,
+    "examTerm": "SEPTEMBER",
+    "classId": "iq19SII",
+    "revoked": false
+},
+{
+    "studentCard": 2018271338,
+    "points": 91,
+    "grade": 10,
+    "date": 1568570495769,
+    "examTerm": "SEPTEMBER",
+    "classId": "iq19SII",
+    "revoked": true
+},
+{
+    "studentCard": 2018271337,
+    "points": 85,
+    "grade": 9,
+    "date": 1568570495769,
+    "examTerm": "SEPTEMBER",
+    "classId": "vH19SII",
+    "revoked": true
+}]

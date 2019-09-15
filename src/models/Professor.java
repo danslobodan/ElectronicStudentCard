@@ -28,15 +28,8 @@ public class Professor extends User implements IModel<Professor> {
 
 	@Override
 	public boolean modelIsValid() {
-		return StringExtensions.IsNullOrWhitespace(getFirstName()) && 
-			StringExtensions.IsNullOrWhitespace(getLastName()) &&
-			StringExtensions.IsNullOrWhitespace(getUserName()) &&
-			StringExtensions.IsNullOrWhitespace(getPassword()) &&
-			StringExtensions.IsNullOrWhitespace(email);
+		return super.modelIsValid() &&
+			!StringExtensions.IsNullOrWhitespace(email) &&
+			title != null;
 	}
-
-	@Override
-	public boolean isIdenticalTo(Professor model) {
-		return model.getUserName().equals(getUserName());
-	}	
 }

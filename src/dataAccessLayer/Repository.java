@@ -1,6 +1,7 @@
 package dataAccessLayer;
 
 import java.io.File;
+
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -10,9 +11,13 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import models.IModel;
+import utilities.Logger;
 
 public class Repository<T extends IModel<T>> implements IRepository<T> {
 	
+	private Logger logger = Logger.GetLogger(this);
+	
+	private String className;
 	private File file;
 	private List<T> items;
 	private ObjectMapper mapper;
@@ -20,18 +25,19 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	
 	public Repository(Class<T> cls) {
 		
-		String className = cls.getSimpleName().toLowerCase();
-		System.out.println(String.format("class name %s", className));
-		
+		className = cls.getSimpleName().toLowerCase();		
 		mapper = new ObjectMapper();
 
 		file = new File(String.format("%s/%ss.json", folder, className));		
+		logger.debug("Loading %ss from file %s", className, file.getPath());
 		
 		if (!file.exists())
 			createFile(file);
 		
-		if (file.length() == 0)
+		if (file.length() == 0) {
+			logger.debug("File empty. Initializing empty array.");
 			items = new ArrayList<T>();
+		}
 		else
 			load(cls);
 	}
@@ -39,16 +45,11 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	public boolean add(T item) {
 		
 		if (!isValid(item)) {
-			System.out.println("Cannot add item - item is not valid");
+			logger.debug("Cannot add %s - it is not valid", className);
 			return false;
 		}
 		
-		if (exists(item)) {
-			System.out.println("Cannot add to list - item already exists.");
-			return false;
-		}
-		
-		System.out.println("Added item to list.");
+		logger.debug("Added %s to list.", className);
 		items.add(item);
 		save();
 		return true;
@@ -68,51 +69,51 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 		return new ArrayList<T>(items);
 	}
 	
-	public boolean update(T item) {
+	public boolean update(Predicate<T> predicate, T item) {
 		
 		if (!isValid(item)) {
-			System.out.println("Cannot update item - item is not valid.");
+			logger.debug("Cannot update %s - it is not valid.", className);
 			return false;
 		}
 		
-		if (!exists(item)) {
-			System.out.println("Could not find item to update.");			
+		if (!exists(predicate)) {
+			logger.debug("Could not find %s to update.", className);
 			return false;
 		}
 		
-		items.set(indexOf(item), item);				
+		items.set(indexOf(predicate), item);
 		save();
 		
-		System.out.println("Updated item.");
+		logger.debug("Updated %s.", className);
 		return true;
 	}
 	
-	public boolean delete(T item) {
+	public boolean delete(Predicate<T> predicate) {
 		
-		if (!exists(item)) {
-			System.out.println("Could not delete item - item not found.");			
+		if (!exists(predicate)) {
+			logger.debug("Could not delete %s - item not found.", className);			
 			return false;
 		}
 		
-		items.remove(indexOf(item));
+		items.remove(indexOf(predicate));
 		save();
-		System.out.println("Deleted item.");
+		logger.debug("Deleted %s.", className);
 		return true;		
 	}
 	
-	public boolean exists(T item) {
-		return items.stream().anyMatch(listItem -> item.isIdenticalTo(listItem)); 
+	public boolean exists(Predicate<T> predicate) {
+		return items.stream().anyMatch(predicate);
 	}
 	
 	private boolean isValid(T item) {
 		return item != null && item.modelIsValid();
 	}
 	
-	private int indexOf(T item) {
+	private int indexOf(Predicate<T> predicate) {
 		
 		for (int i = 0; i < items.size(); i++) {
 			T listItem = items.get(i);
-			if (item.isIdenticalTo(listItem))
+			if (predicate.test(listItem))
 				return i;
 		}
 		
@@ -121,29 +122,30 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	
 	private void save() {
 		
-		System.out.println("Saving changes.");
+		logger.debug("Saving changes to %ss.", className);
 		try {
 			mapper.writeValue(file, items);
 		}
 		catch (Exception ex) {
-			System.out.println("Could not save changes.");
+			logger.debug("Could not save changes.");
 			ex.printStackTrace();
 		}
 	}
 	
 	private void load(Class<T> cls) {
+		
+		logger.debug("Reading file contents into list into List");
 		try {
-			System.out.println("Reading file contents into list into List");
 
 			JavaType type = mapper
 				.getTypeFactory()
 				.constructCollectionType(List.class, cls);
 			
 			items = mapper.readValue(file, type);
-			System.out.println("Successfully read " + items.size() + " objects.");
+			logger.debug("Read %s %ss to list", items.size(), className);
 		}
 		catch (Exception ex) {
-			System.out.println("Could not read into list");
+			logger.debug("Could not read into list");
 			ex.printStackTrace();
 			items = new ArrayList<T>();
 		}
@@ -153,15 +155,15 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 		try	{
 			var localFolder = new File(file.getParent());
 			if (!localFolder.exists()) {
-				System.out.println(String.format("Creating folder %s", folder));
+				logger.debug("Creating folder %s", folder);
 				localFolder.mkdir();
 			}
 			
-			System.out.println(String.format("Creating file %s", file.getPath()));
+			logger.debug("Creating file %s", file.getPath());
 			file.createNewFile();
 		}
 		catch (Exception ex) {
-			System.out.println("Could not create file.");
+			logger.debug("Could not create file.");
 			ex.printStackTrace();
 		}		
 	}

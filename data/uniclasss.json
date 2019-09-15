@@ -1,0 +1,18 @@
+[{
+    "id": "iq19SII",
+    "name": "Objektno Orijentisano Programiranje 1",
+    "syllabus": "Knowlege of basic object orientated principles.",
+    "calendarYear": 2019,
+    "curriculumYear": 1,
+    "numberOfTheoryClasses": 10,
+    "numberOfPracticeClasses": 10
+},
+{
+    "id": "vH19SII",
+    "name": "Engleski Jezik 2",
+    "syllabus": "Advanced English language course.",
+    "calendarYear": 2019,
+    "curriculumYear": 2,
+    "numberOfTheoryClasses": 20,
+    "numberOfPracticeClasses": 20
+}]
