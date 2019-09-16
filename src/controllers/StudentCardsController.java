@@ -1,11 +1,11 @@
 package controllers;
 
-import dataAccessLayer.IRepository;
 import models.Exam;
 import models.Professor;
 import models.Student;
 import models.StudentCard;
 import models.UniClass;
+import persistence.IRepository;
 import utilities.Logger;
 
 public class StudentCardsController {

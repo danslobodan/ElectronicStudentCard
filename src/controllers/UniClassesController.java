@@ -3,8 +3,8 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import dataAccessLayer.IRepository;
 import models.UniClass;
+import persistence.IRepository;
 import utilities.Logger;
 import utilities.RandomStringGenerator;
 

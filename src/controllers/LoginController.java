@@ -1,10 +1,10 @@
 package controllers;
 
-import dataAccessLayer.IRepository;
 import models.Administrator;
 import models.Professor;
 import models.Student;
 import models.User;
+import persistence.IRepository;
 import utilities.Logger;
 
 public class LoginController implements ILoginController {

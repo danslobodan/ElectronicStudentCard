@@ -3,7 +3,6 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import dataAccessLayer.IRepository;
 import models.Exam;
 import models.ExamTerm;
 import models.Professor;
@@ -11,6 +10,7 @@ import models.Student;
 import models.StudentCard;
 import models.Title;
 import models.UniClass;
+import persistence.IRepository;
 import utilities.Logger;
 
 public class ExamsController {

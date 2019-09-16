@@ -3,12 +3,12 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import dataAccessLayer.IRepository;
 import models.Administrator;
 import models.Professor;
 import models.Student;
 import models.StudentCard;
 import models.User;
+import persistence.IRepository;
 import utilities.Logger;
 
 public class UsersController {
