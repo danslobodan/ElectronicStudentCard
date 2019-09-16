@@ -7,7 +7,7 @@ import models.Student;
 import models.User;
 import utilities.Logger;
 
-public class LoginController {
+public class LoginController implements ILoginController {
 	
 	private Logger logger = Logger.GetLogger(this);
 	
