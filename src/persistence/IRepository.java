@@ -1,4 +1,4 @@
-package dataAccessLayer;
+package persistence;
 
 import java.util.List;
 import java.util.function.Predicate;
