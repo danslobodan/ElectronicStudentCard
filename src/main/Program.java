@@ -1,33 +1,19 @@
 package main;
 
-import java.time.Year;
-import java.util.Date;
+import controllers.*;
+import dataAccessLayer.*;
+import models.*;
+import views.LoginView;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
-import controllers.ExamsController;
-import controllers.LoggedInUser;
-import controllers.LoginController;
-import controllers.StudentCardsController;
-import controllers.StudentsController;
-import controllers.UniClassesController;
-import controllers.UsersController;
-import dataAccessLayer.Repository;
-import models.Administrator;
-import models.Exam;
-import models.ExamTerm;
-import models.Professor;
-import models.Student;
-import models.StudentCard;
-import models.Title;
-import models.UniClass;
-import utilities.Logger;
-
-public class Program {
+public class Program extends Application {
 
 	public Program() {		
 	}
-
-	public static void main(String[] args) {
-
+	
+	public void start(Stage primaryStage) {
+		
 		var students = new Repository<Student>(Student.class);
 		var professors = new Repository<Professor>(Professor.class);
 		var administrators = new Repository<Administrator>(Administrator.class);
@@ -43,13 +29,15 @@ public class Program {
 		var examsController = new ExamsController(studentCards, students, professors, classes, exams, loggedInUser);
 		var studentsController = new StudentsController(students, loggedInUser);
 		var studentCardsController = new StudentCardsController(studentCards, students, exams, loggedInUser);
-
-		loginController.login("s.dan", "s.dan");
 		
-		var myCard = studentCardsController.getStudentCard();
-		for(var ex : myCard.getExams()) {
-			System.out.println(ex.getClassId());
-		}
+		var stage = new LoginView(primaryStage, loginController);
+		stage.show();
+		
+		primaryStage.setTitle("Electronic Student Card");
+	}
+
+	public static void main(String[] args) {
+		launch(args);
 	}
 
 	private static Student getStudent() {
