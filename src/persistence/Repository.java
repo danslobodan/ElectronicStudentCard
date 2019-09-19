@@ -1,32 +1,34 @@
 package persistence;
 
 import java.io.File;
-
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.ArrayList;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.util.ArrayList;
 
 import models.IModel;
 import utilities.Logger;
 
-public class Repository<T extends IModel<T>> implements IRepository<T> {
+public abstract class Repository<T extends IModel<T>> implements IRepository<T> {
 	
 	private Logger logger = Logger.GetLogger(this);
 	
 	private String className;
 	private File file;
 	private List<T> items;
-	private ObjectMapper mapper;
 	private static final String folder = "data";
 	
-	public Repository(Class<T> cls) {
+	public Repository(List<T> items, Class<T> cls) {
+		
+		this.items = items;
 		
 		className = cls.getSimpleName().toLowerCase();		
-		mapper = new ObjectMapper();
 
 		file = new File(String.format("%s/%ss.json", folder, className));		
 		logger.debug("Loading %ss from file %s", className, file.getPath());
@@ -34,12 +36,9 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 		if (!file.exists())
 			createFile(file);
 		
-		if (file.length() == 0) {
-			logger.debug("File empty. Initializing empty array.");
-			items = new ArrayList<T>();
-		}
-		else
+		if (file.length() != 0) {
 			load(cls);
+		}
 	}
 	
 	public boolean add(T item) {
@@ -124,7 +123,7 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 		
 		logger.debug("Saving changes to %ss.", className);
 		try {
-			mapper.writeValue(file, items);
+			// mapper.writeValue(file, items);
 		}
 		catch (Exception ex) {
 			logger.debug("Could not save changes.");
@@ -135,19 +134,36 @@ public class Repository<T extends IModel<T>> implements IRepository<T> {
 	private void load(Class<T> cls) {
 		
 		logger.debug("Reading file contents into list into List");
+		
 		try {
-
-			JavaType type = mapper
-				.getTypeFactory()
-				.constructCollectionType(List.class, cls);
-			
-			items = mapper.readValue(file, type);
+			var jsonArray = getJSONArray();
+			var it = jsonArray.iterator();
+			while(it.hasNext()) {
+				var obj = new JSONObject(it.next().toString());
+				var model = getModel(obj);
+				items.add(model);
+			}
 			logger.debug("Read %s %ss to list", items.size(), className);
 		}
 		catch (Exception ex) {
 			logger.debug("Could not read into list");
 			ex.printStackTrace();
-			items = new ArrayList<T>();
+		}
+	}
+	
+	protected abstract T getModel(JSONObject obj);
+	
+	private JSONArray getJSONArray() {
+		
+		try {
+			var fis = new FileInputStream(file);
+			var tokener = new JSONTokener(fis);
+			var array = new JSONArray(tokener.nextValue().toString());
+			return array;
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			return new JSONArray();
 		}
 	}
 	

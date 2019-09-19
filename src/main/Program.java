@@ -1,10 +1,12 @@
 package main;
 
 import controllers.*;
-import dataAccessLayer.*;
 import models.*;
-import views.LoginView;
+import persistence.*;
+import views.*;
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Program extends Application {
@@ -14,26 +16,43 @@ public class Program extends Application {
 	
 	public void start(Stage primaryStage) {
 		
-		var students = new Repository<Student>(Student.class);
-		var professors = new Repository<Professor>(Professor.class);
-		var administrators = new Repository<Administrator>(Administrator.class);
-		var classes = new Repository<UniClass>(UniClass.class);
-		var studentCards = new Repository<StudentCard>(StudentCard.class);
-		var exams = new Repository<Exam>(Exam.class);
+
+		var studentsTable = new StudentsTable();
+		var students = new StudentRepository(studentsTable.getItems());
+
+		var professorsTable = new ProfessorsTable();
+		var professors = new ProfessorRepository(professorsTable.getItems());
+		
+		var adminsTable = new AdminsTable();
+		var administrators = new AdministratorRepository(adminsTable.getItems());
+
+		// var classes = new Repository<UniClass>(UniClass.class);
+		// var studentCards = new Repository<StudentCard>(StudentCard.class);
+		// var exams = new Repository<Exam>(Exam.class);
 		
 		var loggedInUser = new LoggedInUser();
 		
-		var loginController = new LoginController(students, professors, administrators, loggedInUser);
-		var usersController = new UsersController(students, professors, administrators, studentCards, loggedInUser);
-		var uniClassesController = new UniClassesController(classes, loggedInUser);
-		var examsController = new ExamsController(studentCards, students, professors, classes, exams, loggedInUser);
-		var studentsController = new StudentsController(students, loggedInUser);
-		var studentCardsController = new StudentCardsController(studentCards, students, exams, loggedInUser);
+		primaryStage.setOnShown(actionEvent -> primaryStage.setTitle(
+				String.format("Electronic Index. User: %s", loggedInUser.getDisplayName())));		
 		
-		var stage = new LoginView(primaryStage, loginController);
-		stage.show();
+		var loginController = new LoginController(students, professors, administrators, loggedInUser);
+		// var usersController = new UsersController(students, professors, administrators, studentCards, loggedInUser);
+		// var uniClassesController = new UniClassesController(classes, loggedInUser);
+		// var examsController = new ExamsController(studentCards, students, professors, classes, exams, loggedInUser);
+		// var studentsController = new StudentsController(students, loggedInUser);
+		// var studentCardsController = new StudentCardsController(studentCards, students, exams, loggedInUser);
+		
+		
+		var adminView = new MainView(adminsTable, professorsTable, studentsTable);
+		var adminScene = new Scene(adminView, 400, 300);
+		primaryStage.setScene(adminScene);
+		primaryStage.show();
+		
+		var loginStage = new LoginView(primaryStage, loginController);
+		// loginStage.show();
 		
 		primaryStage.setTitle("Electronic Student Card");
+		primaryStage.getIcons().add(new Image("file:resources/icon.png"));
 	}
 
 	public static void main(String[] args) {

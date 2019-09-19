@@ -3,11 +3,8 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import utilities.StringExtensions;
 
-@JsonIgnoreProperties(value = { "exams" })
 public class StudentCard implements IModel<StudentCard> {
 
 	private int cardId;
