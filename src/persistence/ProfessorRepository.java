@@ -18,10 +18,10 @@ public class ProfessorRepository extends Repository<Professor> {
 		var professor = new Professor();
 		professor.setDeleted(obj.getBoolean("deleted"));
 		professor.setEmail(obj.getString("email"));
-		professor.setFirstName("firstName");
-		professor.setLastName("lastName");
-		professor.setPassword("password");
-		professor.setUserName("userName");
+		professor.setFirstName(obj.getString("firstName"));
+		professor.setLastName(obj.getString("lastName"));
+		professor.setPassword(obj.getString("password"));
+		professor.setUserName(obj.getString("userName"));
 		professor.setTitle(Enum.valueOf(Title.class, obj.getString("title")));
 		return professor;
 	}

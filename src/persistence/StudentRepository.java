@@ -15,7 +15,6 @@ public class StudentRepository extends Repository<Student> {
 	@Override
 	protected Student getModel(JSONObject obj) {
 		var student = new Student();
-		System.out.println(obj.toString());
 		student.setCardId(obj.getInt("cardId"));
 		student.setDeleted(obj.getBoolean("deleted"));
 		student.setEmail(obj.getString("email"));

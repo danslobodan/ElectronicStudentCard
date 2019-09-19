@@ -28,6 +28,8 @@ public class LoginController implements ILoginController {
 	
 	public boolean login(String username, String password) {
 		
+		logger.debug("username: %s password: %s", username, password);
+		
 		if (students.exists(user -> canLogin(user, username, password))) {
 			
 			logger.debug("Logging in student.");
@@ -38,6 +40,7 @@ public class LoginController implements ILoginController {
 			return true;
 		}
 		
+		logger.debug("%s", professors.getAll().size());
 		if (professors.exists(user -> canLogin(user, username, password))) {
 			
 			logger.debug("Logging in professor.");

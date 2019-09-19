@@ -28,7 +28,7 @@ public abstract class Repository<T extends IModel<T>> implements IRepository<T> 
 		
 		this.items = items;
 		
-		className = cls.getSimpleName().toLowerCase();		
+		className = cls.getSimpleName().toLowerCase();
 
 		file = new File(String.format("%s/%ss.json", folder, className));		
 		logger.debug("Loading %ss from file %s", className, file.getPath());
@@ -37,7 +37,7 @@ public abstract class Repository<T extends IModel<T>> implements IRepository<T> 
 			createFile(file);
 		
 		if (file.length() != 0) {
-			load(cls);
+			load();
 		}
 	}
 	
@@ -131,7 +131,7 @@ public abstract class Repository<T extends IModel<T>> implements IRepository<T> 
 		}
 	}
 	
-	private void load(Class<T> cls) {
+	private void load() {
 		
 		logger.debug("Reading file contents into list into List");
 		
