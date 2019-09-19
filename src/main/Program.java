@@ -37,8 +37,12 @@ public class Program extends Application {
 		var loginStage = new LoginView(primaryStage, loginController);
 		loginStage.show();
 		
+		var usersController = new UsersController(students, professors, administrators, loggedInUser);
+		var addUserView = new UserView(usersController);
+		
 		var mainView = new MainView(adminsTable, professorsTable, studentsTable, classesTable, examsTable, loggedInUser);
 		var mainScene = new Scene(mainView, 400, 300);
+		mainView.setAddUserStage(addUserView);
 		mainView.showView();
 		
 		primaryStage.setOnShown(actionEvent -> {

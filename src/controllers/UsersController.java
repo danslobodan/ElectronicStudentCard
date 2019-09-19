@@ -11,7 +11,7 @@ import models.User;
 import persistence.IRepository;
 import utilities.Logger;
 
-public class UsersController {
+public class UsersController implements IUsersController {
 	
 	private Logger logger = Logger.GetLogger(this);
 
@@ -25,16 +25,15 @@ public class UsersController {
 			IRepository<Student> students,
 			IRepository<Professor> professors,
 			IRepository<Administrator> administrators,
-			IRepository<StudentCard> studentCards,
 			ILogin login) {
 		this.students = students;
 		this.professors = professors;
 		this.administrators = administrators;
-		this.studentCards = studentCards;
+		// this.studentCards = studentCards;
 		this.login = login;
 	}
 
-	public void add(Student student, StudentCard studentCard) {
+	public boolean add(Student student, StudentCard studentCard) {
 		
 		if (canAdd(student) &&
 			studentCard != null && studentCard.modelIsValid() &&
@@ -44,16 +43,20 @@ public class UsersController {
 			student.setCardId(studentCard.getCardId());
 			
 			studentCards.add(studentCard);
-			students.add(student);
+			return students.add(student);
 		}
+		
+		return false;
 	}
 	
-	public void update(Student student) {
+	public boolean update(Student student) {
 		
 		if (canUpdate(student)) {
 			logger.debug("Updating student user %s", student.getUserName());			
-			students.update(stud -> findUser(student, stud), student);
+			return students.update(stud -> findUser(student, stud), student);
 		}
+		
+		return false;
 	}
 	
 	public Student getStudent(String username) {
@@ -110,20 +113,24 @@ public class UsersController {
 		}
 	}
 	
-	public void add(Administrator administrator) {
+	public boolean add(Administrator administrator) {
 		
 		if (canAdd(administrator)) {
 			logger.debug("Adding administrator %s", administrator.getUserName());
-			administrators.add(administrator);
+			return administrators.add(administrator);
 		}
+		
+		return false;
 	}
 	
-	public void update(Administrator administrator) {
+	public boolean update(Administrator administrator) {
 		
 		if (canUpdate(administrator) && !login.getUserName().equals(administrator.getUserName())) {
 			logger.debug("Updating administrator %s", administrator.getUserName());
-			administrators.update(admin -> findUser(admin, administrator), administrator);
+			return administrators.update(admin -> findUser(admin, administrator), administrator);
 		}
+		
+		return false;
 	}
 	
 	public Administrator getAdmin(String username) {

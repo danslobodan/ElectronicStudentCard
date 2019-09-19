@@ -2,11 +2,13 @@ package views;
 
 import controllers.ILoggedInUser;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class MainView extends VBox {
 	
@@ -22,6 +24,8 @@ public class MainView extends VBox {
 	private AdminsTable adminsTable;
 	private StudentsTable studentsTable;
 	private ExamsTable examsTable;
+	
+	private Button addUserButton; 
 	
 	public MainView(AdminsTable adminsTable,
 			ProfessorsTable professorsTable,
@@ -51,6 +55,9 @@ public class MainView extends VBox {
 		examsButton = new ToggleButton("Exams");
 		examsButton.setOnAction(action -> setTable(examsTable));
 		
+		addUserButton = new Button("Add user");
+
+		
 		var tabs = new ToggleGroup();
 		adminsButton.setToggleGroup(tabs);
 		studentsButton.setToggleGroup(tabs);
@@ -64,9 +71,13 @@ public class MainView extends VBox {
 		this.setPadding(new Insets(10, 10, 10, 10));
 	}
 	
+	public void setAddUserStage(Stage stage) {
+		addUserButton.setOnAction(action -> stage.show());		
+	}
 	
 	public void showView() {
 		
+		this.getChildren().clear();
 		buttonBox.getChildren().clear();
 		
 		switch(loggedInUser.getAccessLevel()) {
@@ -91,7 +102,10 @@ public class MainView extends VBox {
 				professorsButton,
 				studentsButton,
 				classesButton);
-		setTable(adminsTable);
+
+		this.getChildren().addAll(buttonBox,
+				adminsTable,
+				addUserButton);
 	}
 	
 	private void showProfessorView() {
@@ -99,14 +113,19 @@ public class MainView extends VBox {
 		buttonBox.getChildren().addAll(
 				studentsButton,
 				examsButton);
-		setTable(studentsTable);
+
+		this.getChildren().addAll(buttonBox,
+				studentsTable,
+				addUserButton);
 	}
 	
 	private void showStudentView() {
 		
 		buttonBox.getChildren().addAll(
 				examsButton);
-		setTable(examsTable);
+		this.getChildren().addAll(buttonBox,
+				examsTable,
+				addUserButton);
 	}
 	
 	private void setTable(TableView<?> table) {
